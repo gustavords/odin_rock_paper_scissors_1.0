@@ -95,3 +95,15 @@ function playRound(humanChoice, computerChoice) {
 }
 
 //  playRound(getHumanChoice(), getComputerChoice());
+
+function playGame() {
+    let rounds = 5;
+    while (rounds > 0) {
+        console.log(`Round : ${5 - (rounds - 1)}`);
+        playRound(getHumanChoice(), getComputerChoice());
+        rounds--;
+    }
+    (humanScore > computerScore) ? console.log("Human WINS") : console.log("Computer WINS");
+}
+
+playGame();
