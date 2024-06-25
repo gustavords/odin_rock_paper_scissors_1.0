@@ -103,7 +103,13 @@ function playGame() {
         playRound(getHumanChoice(), getComputerChoice());
         rounds--;
     }
-    (humanScore > computerScore) ? console.log("Human WINS") : console.log("Computer WINS");
+    if (humanScore == computerScore) {
+        console.log("its a TIE! What are the chances? Here is an extra round!");
+        playRound(getHumanChoice(), getComputerChoice());
+    }
+    else {
+        (humanScore > computerScore) ? console.log("Human WINS") : console.log("Computer WINS");
+    }
 }
 
 playGame();
