@@ -1,12 +1,54 @@
-*{
+* {
     box-sizing: border-box;
     margin: 0px;
     padding: 0px;
 }
 
-body{
+body {
     display: flex;
     flex-direction: column;
     justify-content: center;
     background-color: bisque;
+    padding: 1em;
 }
+
+#versusContainer {
+    border: 1px red solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}
+
+#versusContainer>img {
+    border: 1px red dashed;
+    flex: 1 0 0;
+}
+
+#playerSelectionContainer {
+    border: 1px green solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}
+
+.playerSelectionButton {
+    flex: 1 1 0;
+}
+
+#roundsContainer{
+    border:1px blue solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#round{
+    border: 1px solid purple;
+}
+#score{
+    border: 1px solid orange;
+}
+
+
