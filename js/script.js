@@ -37,25 +37,29 @@ let getHumanChoice = () => {
         return humanChoice;
     }
 };
-
 // console.log(getHumanChoice());
+
+const roundPara = document.querySelector(`#round`);
+roundPara.style.cssText = `white-space: pre`
+
 
 function playRound(humanChoice, computerChoice) {
 
     let roundTxt = (winner) => {
         if (winner == "comp") {
-            console.log(`Human: ${humanChoice} | Computer: ${computerChoice}`);
-            console.log("Computer Wins Round");
-            console.log(`Human Score: ${humanScore} | Computer Score: ${computerScore}`);
+            roundPara.textContent = `Human: ${humanChoice} | Computer: ${computerChoice}\n`
+            roundPara.textContent += `Computer Wins Round \n`
+            roundPara.textContent += `Human Score: ${humanScore} | Computer Score: ${computerScore}`;
+            
         }
         else if (winner == "human") {
-            console.log(`Human: ${humanChoice} | Computer: ${computerChoice}`);
-            console.log("Human Wins Round");
-            console.log(`Human Score: ${humanScore} | Computer Score: ${computerScore}`);
+            roundPara.textContent =`Human: ${humanChoice} | Computer: ${computerChoice}\n`;
+            roundPara.textContent +=`Human Wins Round")\n`;
+            roundPara.textContent +=`Human Score: ${humanScore} | Computer Score: ${computerScore}`;
         } else {
-            console.log(`Human: ${humanChoice} | Computer: ${computerChoice}`);
-            console.log("Tie")
-            console.log(`Human Score: ${humanScore} | Computer Score: ${computerScore}`);
+            roundPara.textContent =`Human: ${humanChoice} | Computer: ${computerChoice}\n`;
+            roundPara.textContent +=`Tie\n`;
+            roundPara.textContent +=`Human Score: ${humanScore} | Computer Score: ${computerScore}`;
         }
 
     };
@@ -93,23 +97,44 @@ function playRound(humanChoice, computerChoice) {
         roundTxt();
     }
 }
-
 //  playRound(getHumanChoice(), getComputerChoice());
 
 function playGame() {
     let rounds = 5;
     while (rounds > 0) {
         console.log(`Round : ${5 - (rounds - 1)}`);
-        playRound(getHumanChoice(), getComputerChoice());
+        playRound(currentPlayerChoice, getComputerChoice());
         rounds--;
     }
     if (humanScore == computerScore) {
         console.log("its a TIE! What are the chances? Here is an extra round!");
-        playRound(getHumanChoice(), getComputerChoice());
+        playRound(currentPlayerChoice, getComputerChoice());
     }
     else {
         (humanScore > computerScore) ? console.log("Human WINS") : console.log("Computer WINS");
     }
+
+
+
+
+}
+// playGame();
+
+
+//find buttons in page
+const buttonCollection = document.querySelectorAll(`.playerSelectionButton`);
+
+let currentPlayerChoice = ``;
+
+function getHumanChoiceBtn(elem) {
+    return elem.target.textContent;
 }
 
-playGame();
+buttonCollection.forEach((button) => {
+    button.addEventListener(`click`, (e) => {
+        currentPlayerChoice = getHumanChoiceBtn(e).toLowerCase();
+        console.log(currentPlayerChoice);
+        playRound(currentPlayerChoice, getComputerChoice());
+        // playGame();
+    });
+});
