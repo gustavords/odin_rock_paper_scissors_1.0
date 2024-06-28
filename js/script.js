@@ -39,27 +39,68 @@ let getHumanChoice = () => {
 };
 // console.log(getHumanChoice());
 
-const roundPara = document.querySelector(`#round`);
-roundPara.style.cssText = `white-space: pre`
 
+
+
+
+
+
+//find buttons in page
+const buttonCollection = document.querySelectorAll(`.playerSelectionButton`);
+const roundPara = document.querySelector(`#round`);
+let currentPlayerChoice = ``;
+let rounds = 5;
+
+
+buttonCollection.forEach((button) => {
+    button.addEventListener(`click`, (e) => {
+        currentPlayerChoice = getHumanChoiceBtn(e).toLowerCase();
+        console.log(currentPlayerChoice);
+        playRound(currentPlayerChoice, getComputerChoice());
+        // playGame();
+        playFiveRounds();
+    });
+});
+
+function getHumanChoiceBtn(elem) {
+    return elem.target.textContent;
+}
+
+function playFiveRounds() {
+    const scorePara = document.querySelector(`#score`);
+    console.log(rounds)
+
+    if (rounds<=1) {
+        (humanScore > computerScore) ?
+            scorePara.textContent = `HUMAN WINS` : scorePara.textContent = `COMP WINS`;
+        rounds = 5;
+    }
+    else {
+        scorePara.textContent = `Round : ${5 - (rounds - 1)}`;
+        rounds--;
+    }
+}
 
 function playRound(humanChoice, computerChoice) {
 
+
     let roundTxt = (winner) => {
+        //allows \n to work
+        roundPara.style.cssText = `white-space: pre`;
         if (winner == "comp") {
             roundPara.textContent = `Human: ${humanChoice} | Computer: ${computerChoice}\n`
             roundPara.textContent += `Computer Wins Round \n`
             roundPara.textContent += `Human Score: ${humanScore} | Computer Score: ${computerScore}`;
-            
+
         }
         else if (winner == "human") {
-            roundPara.textContent =`Human: ${humanChoice} | Computer: ${computerChoice}\n`;
-            roundPara.textContent +=`Human Wins Round")\n`;
-            roundPara.textContent +=`Human Score: ${humanScore} | Computer Score: ${computerScore}`;
+            roundPara.textContent = `Human: ${humanChoice} | Computer: ${computerChoice}\n`;
+            roundPara.textContent += `Human Wins Round")\n`;
+            roundPara.textContent += `Human Score: ${humanScore} | Computer Score: ${computerScore}`;
         } else {
-            roundPara.textContent =`Human: ${humanChoice} | Computer: ${computerChoice}\n`;
-            roundPara.textContent +=`Tie\n`;
-            roundPara.textContent +=`Human Score: ${humanScore} | Computer Score: ${computerScore}`;
+            roundPara.textContent = `Human: ${humanChoice} | Computer: ${computerChoice}\n`;
+            roundPara.textContent += `Tie\n`;
+            roundPara.textContent += `Human Score: ${humanScore} | Computer Score: ${computerScore}`;
         }
 
     };
@@ -119,22 +160,3 @@ function playGame() {
 
 }
 // playGame();
-
-
-//find buttons in page
-const buttonCollection = document.querySelectorAll(`.playerSelectionButton`);
-
-let currentPlayerChoice = ``;
-
-function getHumanChoiceBtn(elem) {
-    return elem.target.textContent;
-}
-
-buttonCollection.forEach((button) => {
-    button.addEventListener(`click`, (e) => {
-        currentPlayerChoice = getHumanChoiceBtn(e).toLowerCase();
-        console.log(currentPlayerChoice);
-        playRound(currentPlayerChoice, getComputerChoice());
-        // playGame();
-    });
-});
