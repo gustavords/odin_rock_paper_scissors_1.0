@@ -1,16 +1,14 @@
-// console.log("im here!");
-
 // Global Variables
 let humanScore = 0;
 let computerScore = 0;
 
 //referencing elements in index.html
 const buttonCollection = document.querySelectorAll(`.playerSelectionButton`);
-const roundPara = document.querySelector(`#round`);
-
 const roundNum = document.querySelector("h3.round-num");
 const roundSelection = document.querySelector("p.round-selection");
 const roundWinner = document.querySelector("p.round-winner");
+const playerChoiceImg = document.querySelector(`#versusContainer>div:nth-child(1)`);
+const compChoiceImg = document.querySelector(`#versusContainer>div:nth-child(2)`);
 
 let currentPlayerChoice = ``;
 let rounds = 4;
@@ -32,7 +30,7 @@ const getComputerChoice = () => {
 };
 
 function getHumanChoiceBtn(elem) {
-    return elem.target.value;
+    return elem.target.value.toLowerCase();
 }
 
 function playRound(humanChoice, computerChoice) {
@@ -46,8 +44,15 @@ function playRound(humanChoice, computerChoice) {
         }
         else {
             roundHist.appendChild(clone);
-
         }
+    };
+
+    const clearBoard = () => {
+        roundSelection.querySelector(`span:nth-child(1)`).textContent = ``;
+        roundSelection.querySelector(`span:nth-child(2)`).textContent = ``;
+        roundSelection.querySelector(`span:nth-child(3)`).textContent = ``;
+        roundSelection.querySelector(`span:nth-child(4)`).textContent = ``;
+        roundWinner.textContent = ``;
     };
 
     let roundTxt = (winner) => {
@@ -100,19 +105,30 @@ function playRound(humanChoice, computerChoice) {
         computerScore++;
         roundTxt();
     }
+    changeVersusDisplay(humanChoice, computerChoice);
     setRoundHistory();
-
-
-    let clearBoard = () => {
-        roundSelection.querySelector(`span:nth-child(1)`).textContent = ``;
-        roundSelection.querySelector(`span:nth-child(2)`).textContent = ``;
-        roundSelection.querySelector(`span:nth-child(3)`).textContent = ``;
-        roundSelection.querySelector(`span:nth-child(4)`).textContent = ``;
-        roundWinner.textContent = ``;
-    };
     clearBoard();
 }
-//  playRound(getHumanChoice(), getComputerChoice());
+
+function changeVersusDisplay(humanChoice, computerChoice) {
+    const displayEmoji = (elemRef, choice) => {
+        switch (choice) {
+            case `rock`:
+                elemRef.textContent = `🪨Rock`;
+                break;
+            case `paper`:
+                elemRef.textContent = `📜Paper`;
+                break;
+            case `scissors`:
+                elemRef.textContent = `✂️Scissors`;
+                break;
+        }
+    }
+
+    displayEmoji(playerChoiceImg, humanChoice);
+    displayEmoji(compChoiceImg, computerChoice);
+
+}
 
 function playFiveRounds() {
     console.log(rounds);
@@ -147,6 +163,7 @@ function playFiveRounds() {
     }
 }
 
+//not used currently
 function playGame() {
     let rounds = 5;
     while (rounds > 0) {
@@ -162,13 +179,16 @@ function playGame() {
         (humanScore > computerScore) ? console.log("Human WINS") : console.log("Computer WINS");
     }
 }
-// playGame();
 
 buttonCollection.forEach((button) => {
     button.addEventListener(`click`, (e) => {
-        currentPlayerChoice = getHumanChoiceBtn(e).toLowerCase();
+
+        //these lines can be made into a function if the rounds are an object with a getter and setter for rounds
+        currentPlayerChoice = getHumanChoiceBtn(e);
         console.log(currentPlayerChoice);
         playRound(currentPlayerChoice, getComputerChoice());
         playFiveRounds();
     });
 });
+
+
