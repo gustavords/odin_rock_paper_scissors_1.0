@@ -13,13 +13,10 @@
     <header>
         <h1>Rock Paper Scissors</h1>
     </header>
-    <br>
     <div id="versusContainer">
-        <div><img class="versusImg" alt="user.png"></div>
+        <div><h4>Human: <span></span></h4><img class="versusImg" alt="user.png"></div>
         VS
-        <div><img class="versusImg" alt="computer.png"></div>
-        
-        
+        <div><h4>Computer: <span></span></h4><img class="versusImg" alt="computer.png"></div>
     </div>
 
     <div id="playerSelectionContainer">
@@ -28,17 +25,15 @@
         <button class="playerSelectionButton" value="scissors">✂️Scissors</button>
     </div>
 
-    <div class="round-hist">
+    <div id="statement">Start the 5-Rounds Game by pressing a button, Round <span>1</span> will start.</div>
+
+    <div id="round-hist">
         <div class="round-container">
             <h3 class="round-num">Round: 1</h3>
-            <p class="round-selection">Round <span>" "</span> -> Human: <span>" "</span> | Computer : <span>" "</span>, <span></span></p>
+            <p class="round-selection">Round <span>" "</span> -> Human: <span>" "</span> | Computer : <span>" "</span>,
+                <span></span></p>
             <p class="round-winner">"---"</p>
         </div>
-    </div>
-
-    <div id="roundsContainer">
-        <p id="round"></p>
-        <p id="score"></p>
     </div>
 </body>
 

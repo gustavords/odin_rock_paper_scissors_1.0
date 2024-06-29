@@ -4,11 +4,14 @@ let computerScore = 0;
 
 //referencing elements in index.html
 const buttonCollection = document.querySelectorAll(`.playerSelectionButton`);
+const playerChoiceImg = document.querySelector(`#versusContainer>div:nth-child(1)`);
+const compChoiceImg = document.querySelector(`#versusContainer>div:nth-child(2)`);
+const gameActionStatement = document.querySelector(`#statement`);
+const roundHist = document.querySelector(`#round-hist`);
+const roundContainer = document.querySelector(`.round-container`);
 const roundNum = document.querySelector("h3.round-num");
 const roundSelection = document.querySelector("p.round-selection");
 const roundWinner = document.querySelector("p.round-winner");
-const playerChoiceImg = document.querySelector(`#versusContainer>div:nth-child(1)`);
-const compChoiceImg = document.querySelector(`#versusContainer>div:nth-child(2)`);
 
 let currentPlayerChoice = ``;
 let rounds = 4;
@@ -36,8 +39,6 @@ function getHumanChoiceBtn(elem) {
 function playRound(humanChoice, computerChoice) {
 
     const setRoundHistory = () => {
-        const roundHist = document.querySelector(`.round-hist`);
-        const roundContainer = document.querySelector(`.round-container`);
         const clone = roundContainer.cloneNode(true);
         if ((5 - (rounds - 4)) > 1) {
             roundHist.insertBefore(clone, roundContainer.nextSibling);
@@ -114,19 +115,19 @@ function changeVersusDisplay(humanChoice, computerChoice) {
     const displayEmoji = (elemRef, choice) => {
         switch (choice) {
             case `rock`:
-                elemRef.textContent = `🪨Rock`;
+                elemRef.textContent = `Rock 🪨`;
                 break;
             case `paper`:
-                elemRef.textContent = `📜Paper`;
+                elemRef.textContent = `Paper 📜`;
                 break;
             case `scissors`:
-                elemRef.textContent = `✂️Scissors`;
+                elemRef.textContent = `Scissors ✂️`;
                 break;
         }
     }
 
-    displayEmoji(playerChoiceImg, humanChoice);
-    displayEmoji(compChoiceImg, computerChoice);
+    displayEmoji(playerChoiceImg.querySelector(`h4>span`), humanChoice);
+    displayEmoji(compChoiceImg.querySelector(`h4>span`), computerChoice);
 
 }
 
@@ -149,15 +150,20 @@ function playFiveRounds() {
             computerScore = 0;
         }
         if (tie === false) {
-            roundWinner.textContent = winner;
+            roundWinner.textContent = ``;
             roundNum.textContent = winner;
             roundSelection.textContent = ``;
             //why does this work?
-            window.location.reload();
-            setTimeout((() => alert(`page will fresh`)), 1);
+            //found out it works differently on different browsers
+            if (!(setTimeout((() => alert(`${winner}\n The page will refresh shortly for a new game.`)), 0)
+            )) {
+                window.location.reload();
+                location.reload();
+            }
         }
     }
     else {
+        gameActionStatement.querySelector(`span`).textContent = `${5 - (rounds - 1)}`
         roundNum.textContent = `Round : ${5 - (rounds - 1)}`;
         rounds--;
     }
@@ -182,7 +188,7 @@ function playGame() {
 
 buttonCollection.forEach((button) => {
     button.addEventListener(`click`, (e) => {
-
+        roundHist.style.cssText = `opacity:1;`;
         //these lines can be made into a function if the rounds are an object with a getter and setter for rounds
         currentPlayerChoice = getHumanChoiceBtn(e);
         console.log(currentPlayerChoice);
