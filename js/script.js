@@ -20,8 +20,6 @@ let getComputerChoice = () => {
     return computerChoice;
 };
 
-// console.log(getComputerChoice());
-
 let getHumanChoice = () => {
     let possibleChoices = ["rock", "paper", "scissors"];
     let humanChoice = prompt("rock, paper or scissors?", "").toLowerCase().trim();
@@ -37,70 +35,90 @@ let getHumanChoice = () => {
         return humanChoice;
     }
 };
-// console.log(getHumanChoice());
-
-
-
-
-
-
 
 //find buttons in page
 const buttonCollection = document.querySelectorAll(`.playerSelectionButton`);
 const roundPara = document.querySelector(`#round`);
 let currentPlayerChoice = ``;
-let rounds = 5;
-
+let rounds = 4;
 
 buttonCollection.forEach((button) => {
     button.addEventListener(`click`, (e) => {
         currentPlayerChoice = getHumanChoiceBtn(e).toLowerCase();
         console.log(currentPlayerChoice);
         playRound(currentPlayerChoice, getComputerChoice());
-        // playGame();
         playFiveRounds();
     });
 });
 
 function getHumanChoiceBtn(elem) {
-    return elem.target.textContent;
+    return elem.target.value;
 }
 
-function playFiveRounds() {
-    const scorePara = document.querySelector(`#score`);
-    console.log(rounds)
+const roundNum = document.querySelector("h3.round-num");
+const roundSelection = document.querySelector("p.round-selection");
+const roundWinner = document.querySelector("p.round-winner");
 
-    if (rounds<=1) {
-        (humanScore > computerScore) ?
-            scorePara.textContent = `HUMAN WINS` : scorePara.textContent = `COMP WINS`;
-        rounds = 5;
+
+function playFiveRounds() {
+    console.log(rounds);
+    if (rounds <= 0) {
+        (humanScore > computerScore) ? roundWinner.textContent = `HUMAN WINS GAME` : roundWinner.textContent = `COMP WINS GAME`;
+        //in case of a tie
+        if (rounds === 1 && computerScore === humanScore) {
+            roundWinner.textContent = `ITS a TIE! One more round!`;
+            rounds++;
+            if (humanScore > computerScore) {
+                roundWinner.textContent = `HUMAN WINS`
+            }
+            if (humanScore > computerScore) {
+                roundWinner.textContent = `COMP WINS`
+            };
+        }
+        else {
+
+            //resets game-rounds
+            rounds = 4;
+            humanScore = 0;
+            computerScore = 0;
+        }
     }
     else {
-        scorePara.textContent = `Round : ${5 - (rounds - 1)}`;
+        //issue with amount
+        //change layout for less confusing round timing
+        roundNum.textContent = `Round : ${5 - (rounds - 1)}`;
         rounds--;
     }
 }
 
 function playRound(humanChoice, computerChoice) {
 
-
-    let roundTxt = (winner) => {
-        //allows \n to work
-        roundPara.style.cssText = `white-space: pre`;
-        if (winner == "comp") {
-            roundPara.textContent = `Human: ${humanChoice} | Computer: ${computerChoice}\n`
-            roundPara.textContent += `Computer Wins Round \n`
-            roundPara.textContent += `Human Score: ${humanScore} | Computer Score: ${computerScore}`;
+    const setRoundHistory = () => {
+        const roundHist = document.querySelector(`.round-hist`);
+        const roundContainer = document.querySelector(`.round-container`);
+        const clone = roundContainer.cloneNode(true);
+        if ((5 - (rounds - 4)) > 1) {
+            roundHist.insertBefore(clone, roundContainer.nextSibling);
+        }
+        else {
+            roundHist.appendChild(clone); 
 
         }
+    };
+
+    let roundTxt = (winner) => {
+        roundSelection.querySelector(`span:nth-child(1)`).textContent = `${5 - (rounds)}`;
+        roundSelection.querySelector(`span:nth-child(2)`).textContent = `${humanChoice}`;
+        roundSelection.querySelector(`span:nth-child(3)`).textContent = `${computerChoice}`;
+        roundSelection.querySelector(`span:nth-child(4)`).textContent = `${humanScore} : ${computerScore}`;
+
+        if (winner == "comp") {
+            roundWinner.textContent = `Computer Wins Round`;
+        }
         else if (winner == "human") {
-            roundPara.textContent = `Human: ${humanChoice} | Computer: ${computerChoice}\n`;
-            roundPara.textContent += `Human Wins Round")\n`;
-            roundPara.textContent += `Human Score: ${humanScore} | Computer Score: ${computerScore}`;
+            roundWinner.textContent = `Human Wins Round`;
         } else {
-            roundPara.textContent = `Human: ${humanChoice} | Computer: ${computerChoice}\n`;
-            roundPara.textContent += `Tie\n`;
-            roundPara.textContent += `Human Score: ${humanScore} | Computer Score: ${computerScore}`;
+            roundWinner.textContent = `Tie`;
         }
 
     };
@@ -108,6 +126,7 @@ function playRound(humanChoice, computerChoice) {
     if (humanChoice == undefined) {
         console.log("error")
     }
+
     if (humanChoice == "rock" && computerChoice == "paper") {
         computerScore++;
         roundTxt("comp");
@@ -137,6 +156,7 @@ function playRound(humanChoice, computerChoice) {
         computerScore++;
         roundTxt();
     }
+    setRoundHistory();
 }
 //  playRound(getHumanChoice(), getComputerChoice());
 
